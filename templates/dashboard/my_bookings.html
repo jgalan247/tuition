@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}My Bookings - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="bg-gray-100 min-h-screen py-8">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-900">My Bookings</h1>
+            <a href="{% url 'bookings:create' %}" class="btn btn-primary">Book New Session</a>
+        </div>
+
+        <!-- Filter -->
+        <div class="bg-white rounded-xl shadow-sm p-4 mb-6">
+            <div class="flex flex-wrap gap-2">
+                <a href="{% url 'dashboard:my_bookings' %}"
+                   class="px-4 py-2 rounded-lg text-sm font-medium {% if not current_status %}bg-primary-100 text-primary-700{% else %}text-gray-600 hover:bg-gray-100{% endif %}">
+                    All
+                </a>
+                <a href="?status=confirmed"
+                   class="px-4 py-2 rounded-lg text-sm font-medium {% if current_status == 'confirmed' %}bg-primary-100 text-primary-700{% else %}text-gray-600 hover:bg-gray-100{% endif %}">
+                    Confirmed
+                </a>
+                <a href="?status=pending"
+                   class="px-4 py-2 rounded-lg text-sm font-medium {% if current_status == 'pending' %}bg-primary-100 text-primary-700{% else %}text-gray-600 hover:bg-gray-100{% endif %}">
+                    Pending
+                </a>
+                <a href="?status=completed"
+                   class="px-4 py-2 rounded-lg text-sm font-medium {% if current_status == 'completed' %}bg-primary-100 text-primary-700{% else %}text-gray-600 hover:bg-gray-100{% endif %}">
+                    Completed
+                </a>
+            </div>
+        </div>
+
+        <!-- Bookings List -->
+        <div class="space-y-4">
+            {% for booking in bookings %}
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                    <div class="flex items-start space-x-4 mb-4 md:mb-0">
+                        <div class="w-14 h-14 bg-primary-100 rounded-lg flex flex-col items-center justify-center flex-shrink-0">
+                            <span class="text-xs text-primary-600 font-medium">{{ booking.date|date:"M" }}</span>
+                            <span class="text-lg font-bold text-primary-700">{{ booking.date|date:"j" }}</span>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900">{{ booking.course.title|default:"Tutoring Session" }}</h3>
+                            <p class="text-sm text-gray-500">
+                                {{ booking.date|date:"l, j F Y" }} at {{ booking.start_time|time:"H:i" }} - {{ booking.end_time|time:"H:i" }}
+                            </p>
+                            <div class="flex flex-wrap gap-2 mt-2">
+                                <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                                    {{ booking.get_session_type_display }}
+                                </span>
+                                <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                                    {{ booking.get_delivery_mode_display }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center space-x-4">
+                        <span class="px-3 py-1 text-sm font-semibold rounded-full
+                            {% if booking.status == 'confirmed' %}bg-green-100 text-green-700
+                            {% elif booking.status == 'pending' %}bg-yellow-100 text-yellow-700
+                            {% elif booking.status == 'completed' %}bg-blue-100 text-blue-700
+                            {% elif booking.status == 'cancelled' %}bg-red-100 text-red-700
+                            {% else %}bg-gray-100 text-gray-700{% endif %}">
+                            {{ booking.get_status_display }}
+                        </span>
+                        <div class="text-right">
+                            <div class="font-semibold text-gray-900">{{ booking.price_display }}</div>
+                        </div>
+                        <a href="{% url 'bookings:detail' booking.pk %}" class="btn btn-secondary text-sm">
+                            View
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="bg-white rounded-xl shadow-sm p-12 text-center">
+                <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">No bookings found</h3>
+                <p class="text-gray-600 mb-6">{% if current_status %}No {{ current_status }} bookings.{% else %}You haven't made any bookings yet.{% endif %}</p>
+                <a href="{% url 'bookings:create' %}" class="btn btn-primary">Book Your First Session</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

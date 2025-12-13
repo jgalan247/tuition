@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Checkout - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="bg-gray-100 min-h-screen py-8">
+    <div class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="text-3xl font-bold text-gray-900 mb-8">Checkout</h1>
+
+        <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+            <!-- Order Summary -->
+            <div class="p-6 border-b">
+                <h2 class="font-semibold text-gray-900 mb-4">Order Summary</h2>
+
+                <div class="space-y-3">
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Session</span>
+                        <span class="font-medium text-gray-900">{{ booking.course.title|default:"Tutoring Session" }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Date</span>
+                        <span class="text-gray-900">{{ booking.date|date:"j F Y" }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Time</span>
+                        <span class="text-gray-900">{{ booking.start_time|time:"H:i" }} - {{ booking.end_time|time:"H:i" }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Duration</span>
+                        <span class="text-gray-900">{{ booking.duration_hours }} hour(s)</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Type</span>
+                        <span class="text-gray-900">{{ booking.get_session_type_display }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Delivery</span>
+                        <span class="text-gray-900">{{ booking.get_delivery_mode_display }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total -->
+            <div class="p-6 bg-gray-50">
+                <div class="flex justify-between items-center mb-6">
+                    <span class="text-lg font-semibold text-gray-900">Total</span>
+                    <span class="text-2xl font-bold text-gray-900">{{ booking.price_display }}</span>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary w-full">
+                        Pay {{ booking.price_display }}
+                    </button>
+                </form>
+
+                <p class="text-center text-sm text-gray-500 mt-4">
+                    Secure payment powered by SumUp
+                </p>
+            </div>
+        </div>
+
+        <div class="mt-6 text-center">
+            <a href="{% url 'bookings:detail' booking.pk %}" class="text-gray-600 hover:text-gray-900">
+                &larr; Back to booking details
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

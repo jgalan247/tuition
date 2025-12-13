@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ course.title }} - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<section class="bg-gradient-to-br from-primary-600 to-primary-800 text-white py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center gap-2 mb-4">
+            <a href="{% url 'courses:list' %}" class="text-primary-200 hover:text-white">Courses</a>
+            <span class="text-primary-300">/</span>
+            <span>{{ course.level.name }}</span>
+        </div>
+        <h1 class="text-4xl font-bold mb-4">{{ course.title }}</h1>
+        <div class="flex flex-wrap items-center gap-4 text-primary-100">
+            <span class="bg-white/20 px-3 py-1 rounded-full text-sm">{{ course.level.name }}</span>
+            {% if course.syllabus_reference %}
+            <span class="bg-white/20 px-3 py-1 rounded-full text-sm">{{ course.syllabus_reference }}</span>
+            {% endif %}
+            <span class="flex items-center">
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                {{ course.duration_weeks }} weeks
+            </span>
+        </div>
+    </div>
+</section>
+
+<section class="py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-3 gap-8">
+            <!-- Main Content -->
+            <div class="lg:col-span-2">
+                <!-- Description -->
+                <div class="bg-white rounded-xl shadow-sm p-8 mb-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">About This Course</h2>
+                    <div class="prose text-gray-600">
+                        {{ course.description|linebreaks }}
+                    </div>
+                </div>
+
+                <!-- Learning Outcomes -->
+                {% if course.learning_outcomes %}
+                <div class="bg-white rounded-xl shadow-sm p-8 mb-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">What You'll Learn</h2>
+                    <div class="prose text-gray-600">
+                        {{ course.learning_outcomes|linebreaks }}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Topics/Curriculum -->
+                {% if topics %}
+                <div class="bg-white rounded-xl shadow-sm p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Course Curriculum</h2>
+
+                    <div class="space-y-4" x-data="{ openTopic: null }">
+                        {% for topic in topics %}
+                        <div class="border rounded-lg">
+                            <button @click="openTopic = openTopic === {{ topic.id }} ? null : {{ topic.id }}"
+                                    class="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50">
+                                <div>
+                                    <span class="font-semibold text-gray-900">{{ topic.title }}</span>
+                                    {% if topic.spec_reference %}
+                                    <span class="text-sm text-gray-500 ml-2">({{ topic.spec_reference }})</span>
+                                    {% endif %}
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-sm text-gray-500 mr-3">{{ topic.lessons.count }} lessons</span>
+                                    <svg class="w-5 h-5 text-gray-400 transform transition" :class="{ 'rotate-180': openTopic === {{ topic.id }} }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </button>
+
+                            <div x-show="openTopic === {{ topic.id }}" x-collapse class="border-t">
+                                {% if topic.description %}
+                                <p class="px-6 py-3 text-gray-600 text-sm bg-gray-50">{{ topic.description }}</p>
+                                {% endif %}
+                                <ul class="divide-y">
+                                    {% for lesson in topic.lessons.all %}
+                                    <li class="px-6 py-3 flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <svg class="w-5 h-5 text-gray-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                            <span class="text-gray-700">{{ lesson.title }}</span>
+                                        </div>
+                                        <span class="text-sm text-gray-500">{{ lesson.duration_minutes }} min</span>
+                                    </li>
+                                    {% empty %}
+                                    <li class="px-6 py-3 text-gray-500 text-sm">Lessons coming soon</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Sidebar -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-xl shadow-sm p-6 sticky top-24">
+                    <div class="text-center mb-6">
+                        <div class="text-3xl font-bold text-gray-900 mb-2">From £{{ PRICING.one_to_one }}/hr</div>
+                        <p class="text-gray-500 text-sm">1-to-1 tuition</p>
+                    </div>
+
+                    <a href="{% url 'bookings:create_for_course' course.slug %}" class="btn btn-primary w-full mb-4">
+                        Book a Session
+                    </a>
+
+                    <a href="{% url 'core:contact' %}" class="btn btn-secondary w-full">
+                        Ask a Question
+                    </a>
+
+                    <hr class="my-6">
+
+                    <div class="space-y-4 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Level</span>
+                            <span class="font-medium text-gray-900">{{ course.level.name }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Duration</span>
+                            <span class="font-medium text-gray-900">{{ course.duration_weeks }} weeks</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Delivery</span>
+                            <span class="font-medium text-gray-900">{{ course.get_delivery_mode_display }}</span>
+                        </div>
+                        {% if course.syllabus_reference %}
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Syllabus</span>
+                            <span class="font-medium text-gray-900">{{ course.syllabus_reference }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    {% if course.prerequisites %}
+                    <hr class="my-6">
+                    <h4 class="font-semibold text-gray-900 mb-2">Prerequisites</h4>
+                    <p class="text-sm text-gray-600">{{ course.prerequisites }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Related Courses -->
+{% if related_courses %}
+<section class="py-12 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-8">Related Courses</h2>
+
+        <div class="grid md:grid-cols-3 gap-6">
+            {% for related in related_courses %}
+            <div class="bg-white rounded-xl shadow-sm hover:shadow-lg transition p-6">
+                <span class="bg-primary-100 text-primary-700 text-xs font-semibold px-2 py-1 rounded">
+                    {{ related.level.name }}
+                </span>
+                <h3 class="text-lg font-semibold text-gray-900 mt-3 mb-2">{{ related.title }}</h3>
+                <p class="text-gray-600 text-sm mb-4">{{ related.description|truncatewords:15 }}</p>
+                <a href="{% url 'courses:detail' related.slug %}" class="text-primary-600 font-semibold hover:text-primary-700 text-sm">
+                    Learn more &rarr;
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

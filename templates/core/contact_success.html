@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Message Sent - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<section class="py-20">
+    <div class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+        </div>
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">Message Sent!</h1>
+        <p class="text-xl text-gray-600 mb-8">Thank you for getting in touch. I'll respond to your message within 24 hours.</p>
+        <a href="{% url 'core:home' %}" class="btn btn-primary">Back to Home</a>
+    </div>
+</section>
+{% endblock %}

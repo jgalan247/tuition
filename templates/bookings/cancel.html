@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Cancel Booking - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="bg-gray-100 min-h-screen py-8">
+    <div class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-xl shadow-sm p-8 text-center">
+            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+            </div>
+
+            <h1 class="text-2xl font-bold text-gray-900 mb-4">Cancel Booking?</h1>
+
+            <div class="text-left bg-gray-50 rounded-lg p-4 mb-6">
+                <p class="font-semibold text-gray-900">{{ booking.course.title|default:"Tutoring Session" }}</p>
+                <p class="text-gray-600">{{ booking.date|date:"l, j F Y" }} at {{ booking.start_time|time:"H:i" }}</p>
+                <p class="text-gray-600">{{ booking.price_display }}</p>
+            </div>
+
+            <p class="text-gray-600 mb-6">
+                {% if booking.status == 'confirmed' %}
+                This booking has been paid. A refund will be processed if cancelled more than 24 hours before the session.
+                {% else %}
+                Are you sure you want to cancel this booking?
+                {% endif %}
+            </p>
+
+            <form method="post" class="flex justify-center space-x-4">
+                {% csrf_token %}
+                <a href="{% url 'bookings:detail' booking.pk %}" class="btn btn-secondary">
+                    Keep Booking
+                </a>
+                <button type="submit" class="btn bg-red-600 text-white hover:bg-red-700">
+                    Yes, Cancel
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

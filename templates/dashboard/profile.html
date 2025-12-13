@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}My Profile - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="bg-gray-100 min-h-screen py-8">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900">My Profile</h1>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-8">
+            <!-- Profile Header -->
+            <div class="flex items-center space-x-6 mb-8 pb-8 border-b">
+                {% if user.profile_image %}
+                <img src="{{ user.profile_image.url }}" alt="{{ user.get_full_name }}" class="w-24 h-24 rounded-full object-cover">
+                {% else %}
+                <div class="w-24 h-24 bg-primary-100 rounded-full flex items-center justify-center">
+                    <span class="text-3xl font-bold text-primary-600">{{ user.first_name|slice:":1" }}{{ user.last_name|slice:":1" }}</span>
+                </div>
+                {% endif %}
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900">{{ user.get_full_name }}</h2>
+                    <p class="text-gray-500">{{ user.email }}</p>
+                </div>
+            </div>
+
+            <!-- Profile Details -->
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <div>
+                    <h3 class="text-sm font-medium text-gray-500 mb-1">Phone</h3>
+                    <p class="text-gray-900">{{ user.phone|default:"Not provided" }}</p>
+                </div>
+                <div>
+                    <h3 class="text-sm font-medium text-gray-500 mb-1">Preferred Delivery</h3>
+                    <p class="text-gray-900">{{ user.get_preferred_delivery_display }}</p>
+                </div>
+                {% if user.school %}
+                <div>
+                    <h3 class="text-sm font-medium text-gray-500 mb-1">School</h3>
+                    <p class="text-gray-900">{{ user.school }}</p>
+                </div>
+                {% endif %}
+                {% if user.year_group %}
+                <div>
+                    <h3 class="text-sm font-medium text-gray-500 mb-1">Year Group</h3>
+                    <p class="text-gray-900">{{ user.year_group }}</p>
+                </div>
+                {% endif %}
+            </div>
+
+            {% if user.parent_name or user.parent_email %}
+            <div class="mb-8 pb-8 border-b">
+                <h3 class="font-semibold text-gray-900 mb-4">Parent/Guardian Details</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    {% if user.parent_name %}
+                    <div>
+                        <h4 class="text-sm font-medium text-gray-500 mb-1">Name</h4>
+                        <p class="text-gray-900">{{ user.parent_name }}</p>
+                    </div>
+                    {% endif %}
+                    {% if user.parent_email %}
+                    <div>
+                        <h4 class="text-sm font-medium text-gray-500 mb-1">Email</h4>
+                        <p class="text-gray-900">{{ user.parent_email }}</p>
+                    </div>
+                    {% endif %}
+                    {% if user.parent_phone %}
+                    <div>
+                        <h4 class="text-sm font-medium text-gray-500 mb-1">Phone</h4>
+                        <p class="text-gray-900">{{ user.parent_phone }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
+            <a href="{% url 'dashboard:profile_edit' %}" class="btn btn-primary">Edit Profile</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Payment Successful - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="bg-gray-100 min-h-screen py-8">
+    <div class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-xl shadow-sm p-8 text-center">
+            <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">Payment Successful!</h1>
+            <p class="text-xl text-gray-600 mb-8">Your booking is now confirmed.</p>
+
+            <div class="bg-gray-50 rounded-lg p-6 text-left mb-8">
+                <h2 class="font-semibold text-gray-900 mb-4">Booking Details</h2>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-gray-500">Session</span>
+                        <span class="text-gray-900">{{ payment.booking.course.title|default:"Tutoring Session" }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-500">Date</span>
+                        <span class="text-gray-900">{{ payment.booking.date|date:"l, j F Y" }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-500">Time</span>
+                        <span class="text-gray-900">{{ payment.booking.start_time|time:"H:i" }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-500">Amount Paid</span>
+                        <span class="font-semibold text-gray-900">{{ payment.amount_display }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-gray-600 mb-6">
+                A confirmation email has been sent to <strong>{{ user.email }}</strong>
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="{% url 'bookings:detail' payment.booking.pk %}" class="btn btn-primary">
+                    View Booking
+                </a>
+                <a href="{% url 'dashboard:home' %}" class="btn btn-secondary">
+                    Go to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Login - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-900">Welcome Back</h1>
+            <p class="mt-2 text-gray-600">Sign in to your account</p>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-8">
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+
+                <div>
+                    <label for="id_login" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <input type="email" name="login" id="id_login" required autofocus
+                           class="form-input"
+                           placeholder="your@email.com">
+                </div>
+
+                <div>
+                    <label for="id_password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <input type="password" name="password" id="id_password" required
+                           class="form-input"
+                           placeholder="Your password">
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <label class="flex items-center">
+                        <input type="checkbox" name="remember" class="h-4 w-4 text-primary-600 border-gray-300 rounded">
+                        <span class="ml-2 text-sm text-gray-600">Remember me</span>
+                    </label>
+                    <a href="{% url 'account_reset_password' %}" class="text-sm text-primary-600 hover:text-primary-700">
+                        Forgot password?
+                    </a>
+                </div>
+
+                {% if form.errors %}
+                <div class="bg-red-50 text-red-600 p-3 rounded-lg text-sm">
+                    Invalid email or password. Please try again.
+                </div>
+                {% endif %}
+
+                <button type="submit" class="btn btn-primary w-full">
+                    Sign In
+                </button>
+            </form>
+
+            <div class="mt-6 text-center">
+                <p class="text-gray-600">
+                    Don't have an account?
+                    <a href="{% url 'account_signup' %}" class="text-primary-600 font-semibold hover:text-primary-700">
+                        Sign up
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

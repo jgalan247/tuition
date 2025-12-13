@@ -1,0 +1,33 @@
+# Django Core
+Django>=5.0,<6.0
+django-environ>=0.11.2
+django-extensions>=3.2.3
+gunicorn>=21.2.0
+whitenoise>=6.6.0
+
+# Database
+psycopg2-binary>=2.9.9
+dj-database-url>=2.1.0
+
+# Authentication
+django-allauth>=0.59.0
+
+# Forms & Validation
+django-crispy-forms>=2.1
+crispy-tailwind>=1.0.1
+
+# HTMX Integration
+django-htmx>=1.17.2
+
+# Image handling
+Pillow>=10.1.0
+
+# Development
+django-debug-toolbar>=4.2.0
+python-dotenv>=1.0.0
+
+# Payments (SumUp)
+requests>=2.31.0
+
+# Scheduling
+python-dateutil>=2.8.2

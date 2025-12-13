@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Payment Cancelled - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="bg-gray-100 min-h-screen py-8">
+    <div class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-xl shadow-sm p-8 text-center">
+            <div class="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg class="w-10 h-10 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+            </div>
+
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">Payment Cancelled</h1>
+            <p class="text-xl text-gray-600 mb-8">Your payment was not completed.</p>
+
+            <p class="text-gray-600 mb-6">
+                Your booking is still pending. You can try again or contact us if you're having issues.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="{% url 'payments:checkout' payment.booking.id %}" class="btn btn-primary">
+                    Try Again
+                </a>
+                <a href="{% url 'dashboard:home' %}" class="btn btn-secondary">
+                    Go to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

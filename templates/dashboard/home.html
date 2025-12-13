@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="bg-gray-100 min-h-screen py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900">Welcome back, {{ user.first_name|default:user.email }}!</h1>
+            <p class="text-gray-600">Manage your bookings and track your progress</p>
+        </div>
+
+        <div class="grid lg:grid-cols-3 gap-8">
+            <!-- Main Content -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Upcoming Sessions -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xl font-semibold text-gray-900">Upcoming Sessions</h2>
+                        <a href="{% url 'bookings:create' %}" class="btn btn-primary text-sm">
+                            Book New Session
+                        </a>
+                    </div>
+
+                    {% if upcoming_bookings %}
+                    <div class="space-y-4">
+                        {% for booking in upcoming_bookings %}
+                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="font-semibold text-gray-900">
+                                        {{ booking.course.title|default:"Tutoring Session" }}
+                                    </div>
+                                    <div class="text-sm text-gray-500">
+                                        {{ booking.date|date:"l, j F Y" }} at {{ booking.start_time|time:"H:i" }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <span class="px-3 py-1 text-xs font-semibold rounded-full
+                                    {% if booking.status == 'confirmed' %}bg-green-100 text-green-700
+                                    {% elif booking.status == 'pending' %}bg-yellow-100 text-yellow-700
+                                    {% else %}bg-gray-100 text-gray-700{% endif %}">
+                                    {{ booking.get_status_display }}
+                                </span>
+                                <a href="{% url 'bookings:detail' booking.pk %}" class="text-primary-600 hover:text-primary-700">
+                                    View &rarr;
+                                </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="text-center py-8">
+                        <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">No upcoming sessions</h3>
+                        <p class="text-gray-600 mb-4">Book your first session to get started</p>
+                        <a href="{% url 'bookings:create' %}" class="btn btn-primary">Book a Session</a>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Recent Sessions -->
+                {% if recent_bookings %}
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-6">Recent Sessions</h2>
+                    <div class="space-y-4">
+                        {% for booking in recent_bookings %}
+                        <div class="flex items-center justify-between p-4 border rounded-lg">
+                            <div>
+                                <div class="font-medium text-gray-900">
+                                    {{ booking.course.title|default:"Tutoring Session" }}
+                                </div>
+                                <div class="text-sm text-gray-500">
+                                    {{ booking.date|date:"j F Y" }}
+                                </div>
+                            </div>
+                            <a href="{% url 'bookings:detail' booking.pk %}" class="text-primary-600 hover:text-primary-700 text-sm">
+                                View notes &rarr;
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Sidebar -->
+            <div class="space-y-6">
+                <!-- Quick Links -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h3 class="font-semibold text-gray-900 mb-4">Quick Links</h3>
+                    <nav class="space-y-2">
+                        <a href="{% url 'dashboard:my_bookings' %}" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            My Bookings
+                        </a>
+                        <a href="{% url 'dashboard:my_courses' %}" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                            </svg>
+                            My Courses
+                        </a>
+                        <a href="{% url 'dashboard:payments' %}" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                            </svg>
+                            Payment History
+                        </a>
+                        <a href="{% url 'dashboard:profile' %}" class="flex items-center px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                            </svg>
+                            My Profile
+                        </a>
+                    </nav>
+                </div>
+
+                <!-- Browse Courses -->
+                <div class="bg-primary-50 rounded-xl p-6">
+                    <h3 class="font-semibold text-gray-900 mb-2">Explore Courses</h3>
+                    <p class="text-gray-600 text-sm mb-4">Browse our full range of Computer Science courses</p>
+                    <a href="{% url 'courses:list' %}" class="btn btn-primary w-full text-sm">View All Courses</a>
+                </div>
+
+                <!-- Need Help -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h3 class="font-semibold text-gray-900 mb-2">Need Help?</h3>
+                    <p class="text-gray-600 text-sm mb-4">Have a question about your sessions or account?</p>
+                    <a href="{% url 'core:contact' %}" class="text-primary-600 font-semibold text-sm">Contact us &rarr;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

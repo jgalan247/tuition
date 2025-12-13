@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block title %}Book a Session - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="bg-gray-100 min-h-screen py-8">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900">Book a Session</h1>
+            {% if course %}
+            <p class="text-gray-600">Booking for: <strong>{{ course.title }}</strong></p>
+            {% endif %}
+        </div>
+
+        <form method="post" class="bg-white rounded-xl shadow-sm p-8">
+            {% csrf_token %}
+
+            <div class="space-y-6">
+                <!-- Session Type -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-900 mb-3">Session Type</label>
+                    <div class="grid grid-cols-3 gap-4">
+                        <label class="relative cursor-pointer">
+                            <input type="radio" name="session_type" value="one_to_one" class="peer sr-only" checked>
+                            <div class="border-2 rounded-xl p-4 text-center peer-checked:border-primary-500 peer-checked:bg-primary-50 hover:bg-gray-50 transition">
+                                <div class="text-2xl font-bold text-gray-900">£60</div>
+                                <div class="text-sm text-gray-500">1-to-1</div>
+                            </div>
+                        </label>
+                        <label class="relative cursor-pointer">
+                            <input type="radio" name="session_type" value="two_students" class="peer sr-only">
+                            <div class="border-2 rounded-xl p-4 text-center peer-checked:border-primary-500 peer-checked:bg-primary-50 hover:bg-gray-50 transition">
+                                <div class="text-2xl font-bold text-gray-900">£100</div>
+                                <div class="text-sm text-gray-500">2 Students</div>
+                            </div>
+                        </label>
+                        <label class="relative cursor-pointer">
+                            <input type="radio" name="session_type" value="three_students" class="peer sr-only">
+                            <div class="border-2 rounded-xl p-4 text-center peer-checked:border-primary-500 peer-checked:bg-primary-50 hover:bg-gray-50 transition">
+                                <div class="text-2xl font-bold text-gray-900">£120</div>
+                                <div class="text-sm text-gray-500">3 Students</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Delivery Mode -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-900 mb-3">Delivery Mode</label>
+                    <div class="grid grid-cols-2 gap-4">
+                        <label class="relative cursor-pointer">
+                            <input type="radio" name="delivery_mode" value="online" class="peer sr-only" checked>
+                            <div class="border-2 rounded-xl p-4 text-center peer-checked:border-primary-500 peer-checked:bg-primary-50 hover:bg-gray-50 transition">
+                                <svg class="w-8 h-8 mx-auto mb-2 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                </svg>
+                                <div class="font-semibold text-gray-900">Online</div>
+                                <div class="text-xs text-gray-500">Via Zoom/Meet</div>
+                            </div>
+                        </label>
+                        <label class="relative cursor-pointer">
+                            <input type="radio" name="delivery_mode" value="face_to_face" class="peer sr-only">
+                            <div class="border-2 rounded-xl p-4 text-center peer-checked:border-primary-500 peer-checked:bg-primary-50 hover:bg-gray-50 transition">
+                                <svg class="w-8 h-8 mx-auto mb-2 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                                <div class="font-semibold text-gray-900">Face-to-Face</div>
+                                <div class="text-xs text-gray-500">In person</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Course Selection (if not preset) -->
+                {% if not course %}
+                <div>
+                    <label for="id_course" class="block text-sm font-semibold text-gray-900 mb-2">Course (optional)</label>
+                    {{ form.course }}
+                    <p class="mt-1 text-sm text-gray-500">Select a specific course or leave blank for general tuition</p>
+                </div>
+                {% endif %}
+
+                <!-- Date & Time -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="id_date" class="block text-sm font-semibold text-gray-900 mb-2">Date</label>
+                        <input type="date" name="date" id="id_date" required
+                               class="form-input"
+                               min="{{ 'now'|date:'Y-m-d' }}">
+                    </div>
+                    <div>
+                        <label for="id_start_time" class="block text-sm font-semibold text-gray-900 mb-2">Start Time</label>
+                        <input type="time" name="start_time" id="id_start_time" required
+                               class="form-input">
+                    </div>
+                </div>
+
+                <!-- Duration -->
+                <div>
+                    <label for="id_duration_hours" class="block text-sm font-semibold text-gray-900 mb-2">Duration</label>
+                    <select name="duration_hours" id="id_duration_hours" class="form-select">
+                        <option value="1.0">1 hour</option>
+                        <option value="1.5">1.5 hours</option>
+                        <option value="2.0">2 hours</option>
+                    </select>
+                </div>
+
+                <!-- Notes -->
+                <div>
+                    <label for="id_notes" class="block text-sm font-semibold text-gray-900 mb-2">Notes (optional)</label>
+                    <textarea name="notes" id="id_notes" rows="3" class="form-textarea"
+                              placeholder="Any specific topics you'd like to cover, questions you have, or other information..."></textarea>
+                </div>
+            </div>
+
+            <div class="mt-8 pt-6 border-t flex justify-between items-center">
+                <div>
+                    <p class="text-sm text-gray-500">Estimated total</p>
+                    <p class="text-2xl font-bold text-gray-900" id="estimated-price">£60.00</p>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    Continue to Payment
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const prices = {
+        'one_to_one': 60,
+        'two_students': 100,
+        'three_students': 120
+    };
+
+    function updatePrice() {
+        const sessionType = document.querySelector('input[name="session_type"]:checked').value;
+        const duration = parseFloat(document.getElementById('id_duration_hours').value);
+        const total = prices[sessionType] * duration;
+        document.getElementById('estimated-price').textContent = '£' + total.toFixed(2);
+    }
+
+    document.querySelectorAll('input[name="session_type"]').forEach(radio => {
+        radio.addEventListener('change', updatePrice);
+    });
+
+    document.getElementById('id_duration_hours').addEventListener('change', updatePrice);
+});
+</script>
+{% endblock %}

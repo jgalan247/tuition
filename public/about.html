@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - TuitionHub</title>
+
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        },
+                        secondary: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Alpine.js for simple interactions -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- Custom styles -->
+    <style>
+        [x-cloak] { display: none !important; }
+        .form-input {
+            @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition;
+        }
+        .form-textarea {
+            @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition;
+        }
+        .form-select {
+            @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition bg-white;
+        }
+        .btn {
+            @apply px-6 py-3 rounded-lg font-semibold transition duration-200 inline-flex items-center justify-center;
+        }
+        .btn-primary {
+            @apply bg-primary-600 text-white hover:bg-primary-700 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+        }
+        .btn-secondary {
+            @apply bg-gray-100 text-gray-700 hover:bg-gray-200 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2;
+        }
+        .btn-outline {
+            @apply border-2 border-primary-600 text-primary-600 hover:bg-primary-50;
+        }
+    </style>
+</head>
+<body class="h-full bg-gray-50" x-data="{ mobileMenuOpen: false, showBanner: true }">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center space-x-2">
+                        <svg class="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                        </svg>
+                        <span class="text-xl font-bold text-gray-900">TuitionHub</span>
+                    </a>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-600 hover:text-primary-600 font-medium">Home</a>
+                    <a href="pricing.html" class="text-gray-600 hover:text-primary-600 font-medium">Pricing</a>
+                    <a href="about.html" class="text-gray-600 hover:text-primary-600 font-medium">About</a>
+                    <a href="contact.html" class="text-gray-600 hover:text-primary-600 font-medium">Contact</a>
+                    <a href="contact.html" class="px-5 py-2.5 rounded-lg font-medium text-white bg-primary-600 hover:bg-primary-700 transition duration-200">Get in Touch</a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="flex items-center md:hidden">
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" class="text-gray-600 hover:text-gray-900">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path x-show="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                            <path x-show="mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div x-show="mobileMenuOpen" x-cloak class="md:hidden bg-white border-t">
+            <div class="px-4 py-4 space-y-3">
+                <a href="index.html" class="block text-gray-600 hover:text-primary-600 font-medium py-2">Home</a>
+                <a href="pricing.html" class="block text-gray-600 hover:text-primary-600 font-medium py-2">Pricing</a>
+                <a href="about.html" class="block text-gray-600 hover:text-primary-600 font-medium py-2">About</a>
+                <a href="contact.html" class="block text-gray-600 hover:text-primary-600 font-medium py-2">Contact</a>
+                <a href="contact.html" class="block w-full mt-4 px-5 py-2.5 rounded-lg font-medium text-white text-center bg-primary-600 hover:bg-primary-700 transition duration-200">Get in Touch</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Launch Offer Banner -->
+    <div x-show="showBanner" x-cloak class="bg-gradient-to-r from-emerald-600 to-green-500 text-white relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+            <div class="flex items-center justify-center">
+                <p class="text-sm sm:text-base font-medium text-center pr-8">
+                    Launch Offer &mdash; Book before 31st March 2026 and save up to 15%!
+                    <a href="pricing.html" class="underline font-bold ml-1 hover:text-emerald-100">View Pricing &rarr;</a>
+                </p>
+                <button @click="showBanner = false" class="absolute right-4 sm:right-6 text-white/80 hover:text-white">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+<!-- Hero -->
+<section class="bg-gradient-to-br from-primary-600 to-primary-800 text-white py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-3xl">
+            <h1 class="text-4xl font-bold mb-6">About Your Tutor</h1>
+            <p class="text-xl text-primary-100">15+ years teaching experience, OCR Examiner</p>
+        </div>
+    </div>
+</section>
+
+<section class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-12 items-start">
+            <!-- Credentials -->
+            <div>
+                <h2 class="text-3xl font-bold text-gray-900 mb-8">Qualifications & Experience</h2>
+
+                <div class="space-y-6">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 14l9-5-9-5-9 5 9 5z"></path>
+                                <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900 text-lg">PhD in Computer Science</h3>
+                            <p class="text-gray-600">Queen Mary University of London</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900 text-lg">OCR Examiner</h3>
+                            <p class="text-gray-600">Active examiner for A-Level Computer Science</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900 text-lg">15+ Years Teaching</h3>
+                            <p class="text-gray-600">Extensive experience across all levels</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Teaching Approach -->
+            <div>
+                <h2 class="text-3xl font-bold text-gray-900 mb-8">My Teaching Approach</h2>
+
+                <div class="bg-gray-50 rounded-2xl p-8">
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="font-semibold text-gray-900 mb-2">Personalised Learning</h3>
+                            <p class="text-gray-600">Every student learns differently. I adapt my teaching style to match how you learn best, whether that's through visual explanations, hands-on coding, or theoretical discussion.</p>
+                        </div>
+
+                        <div>
+                            <h3 class="font-semibold text-gray-900 mb-2">Exam-Focused Preparation</h3>
+                            <p class="text-gray-600">As an OCR examiner, I know exactly what examiners look for. I'll teach you the techniques and approaches that maximise your marks.</p>
+                        </div>
+
+                        <div>
+                            <h3 class="font-semibold text-gray-900 mb-2">Building Real Understanding</h3>
+                            <p class="text-gray-600">Rather than memorisation, I focus on helping you truly understand concepts so you can apply them confidently in any situation.</p>
+                        </div>
+
+                        <div>
+                            <h3 class="font-semibold text-gray-900 mb-2">Practical Programming Skills</h3>
+                            <p class="text-gray-600">Computer Science is a practical subject. We'll write real code together and build projects that reinforce your learning.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- What Students Learn -->
+<section class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">OCR Curriculum Coverage</h2>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="bg-white rounded-xl p-6 shadow-sm">
+                <h3 class="font-semibold text-gray-900 mb-4">Computer Systems</h3>
+                <ul class="space-y-2 text-gray-600 text-sm">
+                    <li>&bull; CPU architecture and operation</li>
+                    <li>&bull; Memory and storage</li>
+                    <li>&bull; System software</li>
+                    <li>&bull; Operating systems</li>
+                </ul>
+            </div>
+
+            <div class="bg-white rounded-xl p-6 shadow-sm">
+                <h3 class="font-semibold text-gray-900 mb-4">Programming</h3>
+                <ul class="space-y-2 text-gray-600 text-sm">
+                    <li>&bull; Python programming</li>
+                    <li>&bull; Data structures</li>
+                    <li>&bull; Object-oriented concepts</li>
+                    <li>&bull; Algorithm implementation</li>
+                </ul>
+            </div>
+
+            <div class="bg-white rounded-xl p-6 shadow-sm">
+                <h3 class="font-semibold text-gray-900 mb-4">Algorithms</h3>
+                <ul class="space-y-2 text-gray-600 text-sm">
+                    <li>&bull; Searching algorithms</li>
+                    <li>&bull; Sorting algorithms</li>
+                    <li>&bull; Big O notation</li>
+                    <li>&bull; Algorithm design</li>
+                </ul>
+            </div>
+
+            <div class="bg-white rounded-xl p-6 shadow-sm">
+                <h3 class="font-semibold text-gray-900 mb-4">Data Representation</h3>
+                <ul class="space-y-2 text-gray-600 text-sm">
+                    <li>&bull; Number systems</li>
+                    <li>&bull; Binary arithmetic</li>
+                    <li>&bull; Character encoding</li>
+                    <li>&bull; Image and sound representation</li>
+                </ul>
+            </div>
+
+            <div class="bg-white rounded-xl p-6 shadow-sm">
+                <h3 class="font-semibold text-gray-900 mb-4">Networks</h3>
+                <ul class="space-y-2 text-gray-600 text-sm">
+                    <li>&bull; Network topologies</li>
+                    <li>&bull; Protocols and layers</li>
+                    <li>&bull; Internet and web</li>
+                    <li>&bull; Network security</li>
+                </ul>
+            </div>
+
+            <div class="bg-white rounded-xl p-6 shadow-sm">
+                <h3 class="font-semibold text-gray-900 mb-4">Computational Thinking</h3>
+                <ul class="space-y-2 text-gray-600 text-sm">
+                    <li>&bull; Abstraction</li>
+                    <li>&bull; Decomposition</li>
+                    <li>&bull; Pattern recognition</li>
+                    <li>&bull; Algorithm design</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="py-20 bg-primary-600">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold text-white mb-4">Ready to Get Started?</h2>
+        <p class="text-xl text-primary-100 mb-8">Book a session and let's work together on your Computer Science goals.</p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="contact.html" class="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold rounded-xl bg-white text-primary-600 hover:bg-gray-100 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+                Book a Session
+                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                </svg>
+            </a>
+            <a href="contact.html" class="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold rounded-xl border-2 border-white text-white hover:bg-white hover:text-primary-600 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+                Ask a Question
+            </a>
+        </div>
+    </div>
+</section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Brand -->
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center space-x-2 mb-4">
+                        <svg class="w-8 h-8 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                        </svg>
+                        <span class="text-xl font-bold">TuitionHub</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">Expert Computer Science Tuition</p>
+                    <p class="text-gray-400 text-sm">PhD Computer Science (Queen Mary University of London)</p>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="index.html" class="hover:text-white">Home</a></li>
+                        <li><a href="pricing.html" class="hover:text-white">Pricing</a></li>
+                        <li><a href="about.html" class="hover:text-white">About</a></li>
+                        <li><a href="contact.html" class="hover:text-white">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h4 class="font-semibold mb-4">Contact</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>admin@coderra.je</li>
+                        <li>07700 717757</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
+                <p>&copy; 2026 TuitionHub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

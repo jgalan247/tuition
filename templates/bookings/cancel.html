@@ -21,7 +21,7 @@
             </div>
 
             <p class="text-gray-600 mb-6">
-                {% if booking.status == 'confirmed' %}
+                {% if booking.status == 'confirmed' and PAYMENTS_ENABLED %}
                 This booking has been paid. A refund will be processed if cancelled more than 24 hours before the session.
                 {% else %}
                 Are you sure you want to cancel this booking?

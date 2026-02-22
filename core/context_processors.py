@@ -17,4 +17,5 @@ def site_settings(request):
             'three_students': 120,
         },
         'DEBUG': settings.DEBUG,
+        'PAYMENTS_ENABLED': settings.PAYMENTS_ENABLED,
     }

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.conf import settings
 from django.http import HttpResponse
 
 from .models import Testimonial, ContactMessage
@@ -133,6 +134,8 @@ def my_bookings(request):
 @login_required
 def payment_history(request):
     """Payment history."""
+    if not settings.PAYMENTS_ENABLED:
+        return redirect('dashboard:home')
     from payments.models import Payment
     payments = Payment.objects.filter(user=request.user)
 

@@ -205,7 +205,7 @@
                     </svg>
                 </button>
                 <div x-show="open === 1" x-collapse class="px-6 pb-4 text-gray-600">
-                    Create an account, choose your preferred date and time, select your session type, and complete the payment. You'll receive a confirmation email with all the details.
+                    Create an account, choose your preferred date and time, select your session type{% if PAYMENTS_ENABLED %}, and complete the payment{% endif %}. You'll receive a confirmation email with all the details.
                 </div>
             </div>
 
@@ -217,7 +217,7 @@
                     </svg>
                 </button>
                 <div x-show="open === 2" x-collapse class="px-6 pb-4 text-gray-600">
-                    Yes, you can reschedule or cancel with at least 24 hours notice for a full refund. Cancellations with less notice may be subject to a fee.
+                    Yes, you can reschedule or cancel with at least 24 hours notice.{% if PAYMENTS_ENABLED %} Cancellations within 24 hours may be subject to a fee, but you'll receive a full refund otherwise.{% endif %}
                 </div>
             </div>
 

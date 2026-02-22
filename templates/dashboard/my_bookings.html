@@ -67,9 +67,11 @@
                             {% else %}bg-gray-100 text-gray-700{% endif %}">
                             {{ booking.get_status_display }}
                         </span>
+                        {% if PAYMENTS_ENABLED %}
                         <div class="text-right">
                             <div class="font-semibold text-gray-900">{{ booking.price_display }}</div>
                         </div>
+                        {% endif %}
                         <a href="{% url 'bookings:detail' booking.pk %}" class="btn btn-secondary text-sm">
                             View
                         </a>

@@ -8,10 +8,12 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('courses/', include('courses.urls')),
     path('bookings/', include('bookings.urls')),
-    path('payments/', include('payments.urls')),
     path('dashboard/', include('core.urls_dashboard')),
     path('', include('core.urls')),
 ]
+
+if settings.PAYMENTS_ENABLED:
+    urlpatterns.insert(4, path('payments/', include('payments.urls')))
 
 # Serve media files in development
 if settings.DEBUG:

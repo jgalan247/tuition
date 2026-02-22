@@ -146,6 +146,8 @@ ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 ACCOUNT_LOGOUT_ON_GET = True
 ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None  # Custom User model has no username field
+ACCOUNT_USER_MODEL_EMAIL_FIELD = 'email'
 
 LOGIN_REDIRECT_URL = '/dashboard/'
 LOGOUT_REDIRECT_URL = '/'
@@ -169,6 +171,7 @@ DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL', default='TuitionHub <noreply@tuit
 SUMUP_API_KEY = env('SUMUP_API_KEY', default='')
 SUMUP_MERCHANT_CODE = env('SUMUP_MERCHANT_CODE', default='')
 SUMUP_API_URL = 'https://api.sumup.com/v0.1'
+PAYMENTS_ENABLED = env.bool('PAYMENTS_ENABLED', default=False)
 
 # Pricing Configuration (in pence for precision)
 PRICING = {

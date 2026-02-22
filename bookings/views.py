@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.conf import settings
 from django.http import JsonResponse
 from django.utils import timezone
 from datetime import datetime, timedelta
@@ -41,8 +42,14 @@ def booking_create(request, course_slug=None):
             if course:
                 booking.course = course
             booking.save()
-            messages.success(request, 'Booking created! Please proceed to payment.')
-            return redirect('payments:checkout', booking_id=booking.id)
+            if settings.PAYMENTS_ENABLED:
+                messages.success(request, 'Booking created! Please proceed to payment.')
+                return redirect('payments:checkout', booking_id=booking.id)
+            else:
+                booking.status = 'confirmed'
+                booking.save()
+                messages.success(request, 'Booking confirmed!')
+                return redirect('bookings:detail', pk=booking.id)
     else:
         initial = {}
         if course:

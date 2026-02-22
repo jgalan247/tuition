@@ -112,9 +112,11 @@
 
                     {% if booking.status == 'pending' %}
                     <div class="flex space-x-4">
+                        {% if PAYMENTS_ENABLED %}
                         <a href="{% url 'payments:checkout' booking.id %}" class="btn btn-primary">
                             Pay Now
                         </a>
+                        {% endif %}
                         <a href="{% url 'bookings:cancel' booking.pk %}" class="btn btn-secondary text-red-600">
                             Cancel
                         </a>
